@@ -57,11 +57,11 @@ public class ClientDTO {
         return email;
     }
 
-    public Set<ClientLoanDTO> getClientLoans() {
+    public Set<ClientLoanDTO> getLoans() {
         return loans;
     }
 
-    public void setClientLoans(Set<ClientLoanDTO> loans){
+    public void setLoans(Set<ClientLoanDTO> loans){
         this.loans = loans;
     }
 
