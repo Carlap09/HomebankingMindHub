@@ -5,19 +5,12 @@ import com.mindhub.homebanking.models.Transaction;
 import com.mindhub.homebanking.models.TransactionType;
 import java.time.LocalDateTime;
 
-
-
 public class TransactionDTO {
     private Long id;
-
     private TransactionType type;
-
     private double amount;
-
     private String description;
-
     private LocalDateTime date;
-
     public TransactionDTO() {
     }
 
