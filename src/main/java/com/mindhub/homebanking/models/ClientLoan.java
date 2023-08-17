@@ -8,7 +8,6 @@ import javax.persistence.*;
 public class ClientLoan {
    @Id
    @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
-   @GenericGenerator(name = "native", strategy = "native")
    private Long id;
    private Double amount;
    private Integer payments;
@@ -53,11 +52,10 @@ public class ClientLoan {
     public void setPayments(Integer payments) {
         this.payments = payments;
     }
-
+@JsonIgnore
     public Client getClient() {
         return client;
     }
-
     public void setClient(Client client) {
         this.client = client;
     }
