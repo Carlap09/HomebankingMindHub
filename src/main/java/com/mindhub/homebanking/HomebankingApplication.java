@@ -10,9 +10,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
-import static com.mindhub.homebanking.models.TransactionType.CREDIT;
-import static com.mindhub.homebanking.models.TransactionType.DEBIT;
-
 
 @SpringBootApplication
 public class HomebankingApplication {
@@ -22,7 +19,7 @@ public class HomebankingApplication {
 		SpringApplication.run(HomebankingApplication.class, args);}
 
 	@Bean
-	public CommandLineRunner initData(ClientRepository clientRepository, AccountRepository accountRepository, TransactionRepository transactionRepository, LoanRepository loanRepository, ClientLoanRepository clientLoanRepository ) {
+	public CommandLineRunner initData(ClientRepository clientRepository, AccountRepository accountRepository, TransactionRepository transactionRepository, LoanRepository loanRepository, ClientLoanRepository clientLoanRepository, CardRepository cardRepository ) {
 		return (args) -> {
 
 			Client melbaClient = new Client("Melba", "Morel", "melba@mindhub.com");
@@ -52,10 +49,10 @@ public class HomebankingApplication {
 			accountRepository.save(alexandraAccount2);
 
 			// Create transactions for Melba's accounts
-			Transaction melbaTransaction1 = new Transaction(melbaAccount1, CREDIT, 1500, "Bank deposit", LocalDateTime.now());
-			Transaction melbaTransaction2 = new Transaction(melbaAccount1, DEBIT, -300, "buys", LocalDateTime.now());
-			Transaction melbaTransaction3 = new Transaction(melbaAccount2, CREDIT, 2000, "Bank deposit", LocalDateTime.now());
-			Transaction melbaTransaction4 = new Transaction(melbaAccount2, DEBIT, -700, "buys", LocalDateTime.now());
+			Transaction melbaTransaction1 = new Transaction(melbaAccount1,TransactionType.CREDIT, 1500, "Bank deposit", LocalDateTime.now());
+			Transaction melbaTransaction2 = new Transaction(melbaAccount1, TransactionType.DEBIT, -300, "buys", LocalDateTime.now());
+			Transaction melbaTransaction3 = new Transaction(melbaAccount2, TransactionType.CREDIT, 2000, "Bank deposit", LocalDateTime.now());
+			Transaction melbaTransaction4 = new Transaction(melbaAccount2, TransactionType.DEBIT, -700, "buys", LocalDateTime.now());
 
 			transactionRepository.save(melbaTransaction1);
 			transactionRepository.save(melbaTransaction2);
@@ -63,10 +60,10 @@ public class HomebankingApplication {
 			transactionRepository.save(melbaTransaction4);
 
 			// Create transactions for Alexandra's accounts
-			Transaction alexandraTransaction1 = new Transaction(alexandraAccount1, CREDIT, 800, "Bank deposit", LocalDateTime.now());
-			Transaction alexandraTransaction2 = new Transaction(alexandraAccount1, DEBIT, -200, "buys", LocalDateTime.now());
-			Transaction alexandraTransaction3 = new Transaction(alexandraAccount2, CREDIT, 1200, "Bank deposit", LocalDateTime.now());
-			Transaction alexandraTransaction4 = new Transaction(alexandraAccount2, DEBIT, -500, "buys", LocalDateTime.now());
+			Transaction alexandraTransaction1 = new Transaction(alexandraAccount1, TransactionType.CREDIT, 800, "Bank deposit", LocalDateTime.now());
+			Transaction alexandraTransaction2 = new Transaction(alexandraAccount1, TransactionType.DEBIT, -200, "buys", LocalDateTime.now());
+			Transaction alexandraTransaction3 = new Transaction(alexandraAccount2, TransactionType.CREDIT, 1200, "Bank deposit", LocalDateTime.now());
+			Transaction alexandraTransaction4 = new Transaction(alexandraAccount2, TransactionType.DEBIT, -500, "buys", LocalDateTime.now());
 
 			transactionRepository.save(alexandraTransaction1);
 			transactionRepository.save(alexandraTransaction2);
@@ -91,23 +88,52 @@ public class HomebankingApplication {
 			ClientLoan melbaMortgage = new ClientLoan(400000.00, 60, melbaClient, mortgageLoan);
 			ClientLoan melbaPersonal = new ClientLoan(50000.00, 12, melbaClient, personalLoan);
 
+
+
 			clientLoanRepository.save(melbaMortgage);
 			clientLoanRepository.save(melbaPersonal);
 
+			melbaClient.getClientLoans().add(melbaMortgage);
+			melbaClient.getClientLoans().add(melbaPersonal);
+			clientRepository.save(melbaClient);
 
 			// Create ClientLoan  for Alexandra
-			ClientLoan alexandraPersonal = new ClientLoan(100000.00, 24, alexandraClient,personalLoan);
-			ClientLoan alexandraCar = new ClientLoan(200000.00,36,alexandraClient,carLoan);
+			ClientLoan alexandraPersonal = new ClientLoan(100000.00, 24, alexandraClient, personalLoan);
+			ClientLoan alexandraCar = new ClientLoan(200000.00, 36, alexandraClient, carLoan);
 
 
 			clientLoanRepository.save(alexandraPersonal);
 			clientLoanRepository.save(alexandraCar);
 
+			alexandraClient.getClientLoans().add(alexandraPersonal);
+			alexandraClient.getClientLoans().add(alexandraCar);
+			clientRepository.save(alexandraClient);
 
+			// Create cards for the client Melba
+			LocalDate currentDate = LocalDate.now();
+			Card melbaDebitCard1 = new Card(melbaClient,melbaClient.getFirstName() + " " + melbaClient.getLastName(),CardType.DEBIT, CardColor.GOLD, "1234567812345678", (short) 235, currentDate, currentDate.plusYears(5));
+			Card melbaCreditCard2 = new Card(melbaClient,melbaClient.getFirstName() + " " + melbaClient.getLastName(),CardType.CREDIT, CardColor.TITANIUM, "9876543298765432", (short) 456, currentDate, currentDate.plusYears(5));
+
+			cardRepository.save(melbaDebitCard1);
+			cardRepository.save(melbaCreditCard2);
+
+			melbaClient.getCards().add(melbaDebitCard1);
+			melbaClient.getCards().add(melbaCreditCard2);
+			clientRepository.save(melbaClient);
+
+			// Create cards for the client Alexandra
+			Card alexandraCreditCard1 = new Card(alexandraClient,alexandraClient.getFirstName() + " " + alexandraClient.getLastName(),CardType.CREDIT, CardColor.SILVER, "5678901256789012", (short) 378, currentDate, currentDate.plusYears(5));
+
+			cardRepository.save(alexandraCreditCard1);
+
+			alexandraClient.getCards().add(alexandraCreditCard1);
+			clientRepository.save(alexandraClient);
 		};
 
 	}
+
 }
+
 
 
 

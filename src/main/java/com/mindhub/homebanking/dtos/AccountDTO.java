@@ -29,7 +29,7 @@ public class AccountDTO {
     public Set<TransactionDTO> getTransactions() {
         return transactions;
     }
-    public void setTransaction(Set<TransactionDTO> transaction) {
+    public void setTransactions(Set<TransactionDTO> transaction) {
         this.transactions = transaction;
     }
 
