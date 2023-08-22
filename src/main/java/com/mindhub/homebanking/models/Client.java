@@ -14,17 +14,16 @@ public class Client {
     private String firstName;
     private String lastName;
     private String email;
-
-    @OneToMany(mappedBy = "client", fetch = FetchType.EAGER)
-    Set<Account> accounts = new HashSet<>();
+    private String password;
 
     public Client() {
     }
 
-    public Client(String firstName, String lastName, String email) {
+    public Client(String firstName, String lastName, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.password = password;
     }
 
     public Long getId() {
@@ -63,21 +62,21 @@ public class Client {
         accounts.add(account);
     }
     @OneToMany(mappedBy = "client", fetch = FetchType.EAGER)
-    private Set<ClientLoan> clientLoans = new HashSet<>();
+    Set<Account> accounts = new HashSet<>();
+    @OneToMany(mappedBy = "client", fetch = FetchType.EAGER)
+    Set<ClientLoan> clientLoans = new HashSet<>();
+
+    @OneToMany(mappedBy = "client", fetch = FetchType.EAGER)
+    Set<Card> cards = new HashSet<>();
 
     public Set<ClientLoan> getClientLoans() {
         return clientLoans;
     }
 
-
     public void addClientLoan (ClientLoan clientLoan) {
         clientLoan.setClient(this);
         clientLoans.add(clientLoan);
-
     }
-
-    @OneToMany(mappedBy = "client", fetch = FetchType.EAGER)
-    Set<Card> cards = new HashSet<>();
 
     public Set<Card> getCards() {
         return cards;
@@ -87,7 +86,13 @@ public class Client {
         cards.add(card);
     }
 
+    public String getPassword() {
+        return password;
+    }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
 }
 
