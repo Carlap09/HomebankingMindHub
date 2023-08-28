@@ -31,7 +31,7 @@ public class HomebankingApplication {
 		return (args) -> {
 
 			Client melbaClient = new Client("Melba", "Morel", "melba@mindhub.com",passwordEncoder.encode("1234"));
-			Client alexandraClient = new Client("Alexandra", "Araujo", "AlexandraA@gmail.com",passwordEncoder.encode("4321"));
+			Client alexandraClient = new Client("Alexandra", "Araujo", "alexandraa@gmail.com",passwordEncoder.encode("4321"));
 			Client adminClient = new Client("admin", "admin", "admin@admin.com", passwordEncoder.encode("7894"));
 
 

@@ -14,22 +14,25 @@ import javax.servlet.http.HttpSession;
 @Configuration
 @EnableWebSecurity
 public class WebAuthorization extends WebSecurityConfigurerAdapter {
-
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
 
-                 .antMatchers("/api/**").permitAll()
-                 .antMatchers("/manager.html").hasAuthority("ADMIN")
-                 .antMatchers("/h2-console/**").hasAuthority("ADMIN")
-                 .antMatchers("/accounts.html","/account.html").hasAuthority("CLIENT")
-                 .antMatchers("/web/**","/script/**","/imagenes/**","/assets/**").permitAll()
-                 .antMatchers(HttpMethod.POST, "/api/clients/current").permitAll()
-                 .antMatchers(HttpMethod.POST,"/api/login").permitAll()
-                 .antMatchers(HttpMethod.POST,"/api/logout").permitAll()
-                 .antMatchers(HttpMethod.POST,"/api/clients").permitAll()
-                 .antMatchers("/index.html").permitAll();
+        http.authorizeRequests()
+                .antMatchers("/rest/**").hasAuthority("ADMIN")
+                .antMatchers("/api/**").permitAll()
+                .antMatchers("/manager.html").hasAuthority("ADMIN")
+                .antMatchers("/h2-console/**").hasAuthority("ADMIN")
+
+
+
+                .antMatchers("/accounts.html","/account.html","/cards.html","/created-card.html").hasAuthority("CLIENT")
+                .antMatchers("/web/**","/script/**","/img/**","/css/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/clients/current","/api/clients/current/accounts","/api/clients/current/cards").hasAuthority("CLIENT")
+                .antMatchers(HttpMethod.POST,"/api/login").permitAll()
+                .antMatchers(HttpMethod.POST,"/api/logout").permitAll()
+                .antMatchers(HttpMethod.POST,"/api/clients").hasAuthority("CLIENT")
+                .antMatchers("/index.html").permitAll()
+                .antMatchers("/register.html").permitAll();
 
 
 

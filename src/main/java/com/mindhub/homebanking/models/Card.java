@@ -4,6 +4,7 @@ import net.minidev.json.annotate.JsonIgnore;
 import javax.persistence.*;
 import java.time.LocalDate;
 
+
 @Entity
 public class Card {
     @Id
@@ -34,6 +35,8 @@ public class Card {
         this.fromDate = fromDate;
         this.thruDate = thruDate;
     }
+
+
 
     public Long getId() {
         return id;
