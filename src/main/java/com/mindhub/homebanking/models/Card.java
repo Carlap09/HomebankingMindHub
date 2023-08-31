@@ -1,6 +1,8 @@
 package com.mindhub.homebanking.models;
 
 import net.minidev.json.annotate.JsonIgnore;
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 
@@ -9,6 +11,7 @@ import java.time.LocalDate;
 public class Card {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
+    @GenericGenerator(name = "native", strategy = "native")
     private Long id;
     private String cardHolder;
     private CardType type;
@@ -97,7 +100,7 @@ public class Card {
     public void setThruDate(LocalDate thruDate) {
         this.thruDate = thruDate;
     }
-@JsonIgnore
+    @JsonIgnore
     public Client getClient() {
         return client;
     }

@@ -18,22 +18,15 @@ public class WebAuthorization extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
         http.authorizeRequests()
+                .antMatchers("/index.html", "/register.html", "/web/**", "/script/**", "/img/**", "/css/**", "/api/login", "/api/logout").permitAll()
                 .antMatchers("/rest/**").hasAuthority("ADMIN")
-                .antMatchers("/api/**").permitAll()
                 .antMatchers("/manager.html").hasAuthority("ADMIN")
                 .antMatchers("/h2-console/**").hasAuthority("ADMIN")
-
-
-
-                .antMatchers("/accounts.html","/account.html","/cards.html","/created-card.html").hasAuthority("CLIENT")
-                .antMatchers("/web/**","/script/**","/img/**","/css/**").permitAll()
-                .antMatchers(HttpMethod.POST, "/api/clients/current","/api/clients/current/accounts","/api/clients/current/cards").hasAuthority("CLIENT")
-                .antMatchers(HttpMethod.POST,"/api/login").permitAll()
-                .antMatchers(HttpMethod.POST,"/api/logout").permitAll()
-                .antMatchers(HttpMethod.POST,"/api/clients").hasAuthority("CLIENT")
-                .antMatchers("/index.html").permitAll()
-                .antMatchers("/register.html").permitAll();
-
+                .antMatchers("/api/").hasAuthority("CLIENT")
+                .antMatchers("/api/clients/current/accounts").hasAuthority("CLIENT")
+                .antMatchers("/accounts.html", "/account.html", "/cards.html", "/created-card.html", "/transfers.html").hasAuthority("CLIENT")
+                .antMatchers(HttpMethod.POST, "/api/clients/current", "/api/clients/current/accounts", "/api/clients/current/cards").hasAuthority("CLIENT")
+                .antMatchers(HttpMethod.POST, "/transactions", "/transfers.html").hasAuthority("CLIENT");
 
 
         http.formLogin()

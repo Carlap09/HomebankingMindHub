@@ -9,15 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import java.util.stream.Collectors;
+
 
 import static java.util.stream.Collectors.toList;
 
@@ -67,6 +65,22 @@ public class AccountController {
         accountRepository.save(newAccount);
 
         return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @GetMapping("/clients/current/accounts")
+    public ResponseEntity<List<AccountDTO>> getAccounts(Authentication authentication) {
+        String email = authentication.getName();
+        Client client = clientRepository.findByEmail(email);
+
+        if (client == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        List<AccountDTO> accountDTO = client.getAccounts().stream()
+                .map(AccountDTO::new)
+                .collect(Collectors.toList());
+
+        return new ResponseEntity<>(accountDTO, HttpStatus.OK);
     }
 
 }

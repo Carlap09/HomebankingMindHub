@@ -12,11 +12,14 @@ import java.util.stream.Collectors;
 public class Loan {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
+    @GenericGenerator(name = "native", strategy = "native")
     private  Long id;
     private  String name;
     private   Double maxAmount;
     @ElementCollection
     private List<Integer> payments;
+
+
     public Loan() {
     }
 

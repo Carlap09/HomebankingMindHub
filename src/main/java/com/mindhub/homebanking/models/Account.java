@@ -1,6 +1,8 @@
 package com.mindhub.homebanking.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -11,6 +13,7 @@ public class Account {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
+    @GenericGenerator(name = "native", strategy = "native")
     private Long id;
     private String number;
     private LocalDate creationDate;
@@ -23,7 +26,7 @@ public class Account {
 
     }
     @OneToMany(mappedBy = "account", fetch = FetchType.EAGER)
-    Set<Transaction> transactions = new HashSet<>();
+    Set<Transactions> transactions = new HashSet<>();
 
     public Account(String number, LocalDate creationDate, double balance) {
         this.number = number;
@@ -69,12 +72,12 @@ public class Account {
     }
 
 
-    public Set<Transaction> getTransactions() {
+    public Set<Transactions> getTransactions() {
         return transactions;
     }
-    public void addTransaction(Transaction transaction) {
-        transaction.setAccount(this);
-        transactions.add(transaction);
+    public void addTransaction(Transactions transactions) {
+        transactions.setAccount(this);
+        this.transactions.add(transactions);
 
     }
 }

@@ -59,26 +59,26 @@ public class HomebankingApplication {
 			accountRepository.save(alexandraAccount2);
 
 			// Create transactions for Melba's accounts
-			Transaction melbaTransaction1 = new Transaction(melbaAccount1,TransactionType.CREDIT, 1500, "Bank deposit", LocalDateTime.now());
-			Transaction melbaTransaction2 = new Transaction(melbaAccount1, TransactionType.DEBIT, -300, "buys", LocalDateTime.now());
-			Transaction melbaTransaction3 = new Transaction(melbaAccount2, TransactionType.CREDIT, 2000, "Bank deposit", LocalDateTime.now());
-			Transaction melbaTransaction4 = new Transaction(melbaAccount2, TransactionType.DEBIT, -700, "buys", LocalDateTime.now());
+			Transactions melbaTransactions1 = new Transactions(melbaAccount1, TransactionsType.CREDIT, 1500, "Bank deposit", LocalDateTime.now());
+			Transactions melbaTransactions2 = new Transactions(melbaAccount1, TransactionsType.DEBIT, -300, "buys", LocalDateTime.now());
+			Transactions melbaTransactions3 = new Transactions(melbaAccount2, TransactionsType.CREDIT, 2000, "Bank deposit", LocalDateTime.now());
+			Transactions melbaTransactions4 = new Transactions(melbaAccount2, TransactionsType.DEBIT, -700, "buys", LocalDateTime.now());
 
-			transactionRepository.save(melbaTransaction1);
-			transactionRepository.save(melbaTransaction2);
-			transactionRepository.save(melbaTransaction3);
-			transactionRepository.save(melbaTransaction4);
+			transactionRepository.save(melbaTransactions1);
+			transactionRepository.save(melbaTransactions2);
+			transactionRepository.save(melbaTransactions3);
+			transactionRepository.save(melbaTransactions4);
 
 			// Create transactions for Alexandra's accounts
-			Transaction alexandraTransaction1 = new Transaction(alexandraAccount1, TransactionType.CREDIT, 800, "Bank deposit", LocalDateTime.now());
-			Transaction alexandraTransaction2 = new Transaction(alexandraAccount1, TransactionType.DEBIT, -200, "buys", LocalDateTime.now());
-			Transaction alexandraTransaction3 = new Transaction(alexandraAccount2, TransactionType.CREDIT, 1200, "Bank deposit", LocalDateTime.now());
-			Transaction alexandraTransaction4 = new Transaction(alexandraAccount2, TransactionType.DEBIT, -500, "buys", LocalDateTime.now());
+			Transactions alexandraTransactions1 = new Transactions(alexandraAccount1, TransactionsType.CREDIT, 800, "Bank deposit", LocalDateTime.now());
+			Transactions alexandraTransactions2 = new Transactions(alexandraAccount1, TransactionsType.DEBIT, -200, "buys", LocalDateTime.now());
+			Transactions alexandraTransactions3 = new Transactions(alexandraAccount2, TransactionsType.CREDIT, 1200, "Bank deposit", LocalDateTime.now());
+			Transactions alexandraTransactions4 = new Transactions(alexandraAccount2, TransactionsType.DEBIT, -500, "buys", LocalDateTime.now());
 
-			transactionRepository.save(alexandraTransaction1);
-			transactionRepository.save(alexandraTransaction2);
-			transactionRepository.save(alexandraTransaction3);
-			transactionRepository.save(alexandraTransaction4);
+			transactionRepository.save(alexandraTransactions1);
+			transactionRepository.save(alexandraTransactions2);
+			transactionRepository.save(alexandraTransactions3);
+			transactionRepository.save(alexandraTransactions4);
 
 			// Create loans and save them in the database
 

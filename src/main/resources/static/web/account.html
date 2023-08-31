@@ -98,12 +98,12 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="(transaction, index) in accountInfo.transactions"
-                                        v-bind:class="[ transaction.type == 'CREDIT' ? 'credit-transaction' : 'debit-transaction' ]">
+                                    <tr v-for="(transactions, index) in accountInfo.transactions"
+                                        v-bind:class="[ transactions.type == 'CREDIT' ? 'credit-transactions' : 'debit-transactions' ]">
                                         <td>{{ index+1 }}</td>
-                                        <td>{{ transaction.description }}</td>
-                                        <td>{{ formatDate(transaction.date) }}</td>
-                                        <td>{{ transaction.amount }}</td>
+                                        <td>{{ transactions.description }}</td>
+                                        <td>{{ formatDate(transactions.date) }}</td>
+                                        <td>{{ transactions.amount }}</td>
                                     </tr>
                                 </tbody>
                             </table>
