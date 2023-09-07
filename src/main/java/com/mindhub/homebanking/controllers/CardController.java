@@ -2,9 +2,12 @@ package com.mindhub.homebanking.controllers;
 
 
 import com.mindhub.homebanking.dtos.CardDTO;
+import com.mindhub.homebanking.dtos.ClientDTO;
 import com.mindhub.homebanking.models.*;
 import com.mindhub.homebanking.repositories.CardRepository;
 import com.mindhub.homebanking.repositories.ClientRepository;
+import com.mindhub.homebanking.services.CardService;
+import com.mindhub.homebanking.services.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +15,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
 
@@ -19,22 +23,15 @@ import java.util.stream.Collectors;
 @RequestMapping("/api")
 public class CardController {
     @Autowired
-    CardRepository cardRepository;
+    CardService cardService;
     @Autowired
-    ClientRepository clientRepository;
+    ClientService clientService;
+
 
     @RequestMapping("/cards")
     public List<CardDTO> cardDTo() {
-        return cardRepository.findAll().stream().map(CardDTO::new).collect(Collectors.toList());
+        return cardService.findAll().stream().map(CardDTO::new).collect(Collectors.toList());
     }
-
-    @RequestMapping("/cards/{id}")
-    public CardDTO getcardDTO(@PathVariable Long id) {
-        CardDTO cardId = new CardDTO(cardRepository.findById(id).orElse(null));
-        return cardId;
-    }
-
-
 
     @RequestMapping(path = "clients/current/cards", method = RequestMethod.POST)
     public ResponseEntity<Object> createCard(Authentication authentication,
@@ -43,7 +40,7 @@ public class CardController {
 
         String email = authentication.getName();
 
-        Client client = clientRepository.findByEmail(email);
+        Client client = clientService.findByEmail(email);
 
         if (client == null) {
             return new ResponseEntity<>("Client not found", HttpStatus.NOT_FOUND);
@@ -63,7 +60,7 @@ public class CardController {
         LocalDateTime fromDate = LocalDateTime.now();
 
         Card newCard = new Card(client, client.getFirstName() + " " + client.getLastName(), cardType, cardColor, cardNumber, cvv, fromDate.toLocalDate(), thruDate.toLocalDate());
-        cardRepository.save(newCard);
+        cardService.save(newCard);
 
         return new ResponseEntity<>("You have created a card successfully", HttpStatus.CREATED);
     }

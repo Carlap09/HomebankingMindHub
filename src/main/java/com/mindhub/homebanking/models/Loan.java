@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
+
 
 @Entity
 public class Loan {
@@ -15,7 +15,8 @@ public class Loan {
     @GenericGenerator(name = "native", strategy = "native")
     private  Long id;
     private  String name;
-    private   Double maxAmount;
+    private   double maxAmount;
+
     @ElementCollection
     private List<Integer> payments;
 
@@ -23,7 +24,8 @@ public class Loan {
     public Loan() {
     }
 
-    public Loan(String name, Double maxAmount, List<Integer> payments) {
+    public Loan(Long id, String name, double maxAmount, List<Integer> payments) {
+        this.id = id;
         this.name = name;
         this.maxAmount = maxAmount;
         this.payments = payments;
@@ -45,11 +47,11 @@ public class Loan {
         this.name = name;
     }
 
-    public Double getMaxAmount() {
+    public double getMaxAmount() {
         return maxAmount;
     }
 
-    public void setMaxAmount(Double maxAmount) {
+    public void setMaxAmount(float maxAmount) {
         this.maxAmount = maxAmount;
     }
 
@@ -60,6 +62,7 @@ public class Loan {
     public void setPayments(List<Integer> payments) {
         this.payments = payments;
     }
+
 
     @OneToMany(mappedBy = "loan", fetch = FetchType.EAGER)
     Set<ClientLoan> clientLoans = new HashSet<>();

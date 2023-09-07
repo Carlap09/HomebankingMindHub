@@ -5,9 +5,9 @@ import com.mindhub.homebanking.models.Account;
 import com.mindhub.homebanking.models.Client;
 import com.mindhub.homebanking.models.Transactions;
 import com.mindhub.homebanking.models.TransactionsType;
-import com.mindhub.homebanking.repositories.AccountRepository;
-import com.mindhub.homebanking.repositories.ClientRepository;
-import com.mindhub.homebanking.repositories.TransactionRepository;
+import com.mindhub.homebanking.services.AccountService;
+import com.mindhub.homebanking.services.ClientService;
+import com.mindhub.homebanking.services.TransactionsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,11 +23,11 @@ import java.util.Set;
     @RequestMapping("/api")
     public class TransactionController{
     @Autowired
-    private AccountRepository accountRepository;
+    private AccountService accountService;
     @Autowired
-    private TransactionRepository transactionRepository;
+    private TransactionsService transactionsService;
     @Autowired
-    ClientRepository clientRepository;
+        ClientService clientService;
 
     @Transactional
     @RequestMapping(path = "/transactions",method = RequestMethod.POST)
@@ -37,9 +37,9 @@ import java.util.Set;
                                                     @RequestParam Double amount,
                                                     Authentication authentication) {
 
-        Client client = clientRepository.findByEmail(authentication.getName());
-        Account accountFromNumber=accountRepository.findByNumber(fromAccountNumber);
-        Account accountToAcccountNumber =accountRepository.findByNumber(toAccountNumber);
+        Client client = clientService.findByEmail(authentication.getName());
+        Account accountFromNumber=accountService.findByNumber(fromAccountNumber);
+        Account accountToAcccountNumber =accountService.findByNumber(toAccountNumber);
 
 
         // check that the parameters are not empty
@@ -71,8 +71,8 @@ import java.util.Set;
         Transactions transactionsTo = new Transactions(accountToAcccountNumber, TransactionsType.CREDIT, amount,
                 accountToAcccountNumber.getNumber() + " - " + description, LocalDateTime.now());
 
-        transactionRepository.save(transactionsFrom);
-        transactionRepository.save(transactionsTo);
+        transactionsService.save(transactionsFrom);
+        transactionsService.save(transactionsTo);
 
         // Update account balances
         Double updatedBalanceFrom = accountFromNumber.getBalance() - amount;
