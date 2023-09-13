@@ -6,6 +6,7 @@ import com.mindhub.homebanking.services.TransactionsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
 @Service
 public class TransactionsServiceImplement implements TransactionsService {
 
@@ -13,15 +14,16 @@ public class TransactionsServiceImplement implements TransactionsService {
     TransactionRepository transactionRepository;
 
     @Override
-    public void save(Transactions transactionsFrom){
-        transactionRepository.save(transactionsFrom);
-
+    public void save(Transactions transactions) {
+        transactionRepository.save(transactions);
     }
+
 
     @Override
     public void saveTransactions(Transactions transactions) {
         transactionRepository.save(transactions);
     }
+
 
 
 }

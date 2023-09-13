@@ -1,6 +1,7 @@
 package com.mindhub.homebanking.services.implement;
 
 import com.mindhub.homebanking.models.Account;
+import com.mindhub.homebanking.models.Client;
 import com.mindhub.homebanking.repositories.AccountRepository;
 import com.mindhub.homebanking.services.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,13 +10,12 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+
 @Service
 public class AccountServiceImplement implements AccountService {
 
     @Autowired
     AccountRepository accountRepository;
-
-
     @Override
     public List<Account> findAll() {
         return accountRepository.findAll();
@@ -46,4 +46,16 @@ public class AccountServiceImplement implements AccountService {
     public void saveAcc(Account account) {
 
     }
+
+    @Override
+    public Account getOptionalAccountByNumber(String accountToNumber) {
+        return accountRepository.findByNumber(accountToNumber);
+    }
+
+    @Override
+    public List<Account> getAccountsByClient(Client client) {
+        return accountRepository.findByClient(client);
+    }
+
+
 }

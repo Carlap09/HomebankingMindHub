@@ -22,11 +22,10 @@ public class WebAuthorization extends WebSecurityConfigurerAdapter {
                 .antMatchers("/rest/**").hasAuthority("ADMIN")
                 .antMatchers("/manager.html").hasAuthority("ADMIN")
                 .antMatchers("/h2-console/**").hasAuthority("ADMIN")
-                .antMatchers("/api/").hasAuthority("CLIENT")
-                .antMatchers("/api/clients/current/accounts").hasAuthority("CLIENT")
-                .antMatchers("/accounts.html", "/account.html", "/cards.html", "/created-card.html", "/transfers.html","loan-application.html").hasAuthority("CLIENT")
+                .antMatchers(HttpMethod.GET, "/api/**").hasAuthority("CLIENT")
+                .antMatchers("/accounts.html", "/account.html", "/cards.html", "/created-card.html", "/transfers.html", "/loan-application.html").hasAuthority("CLIENT")
                 .antMatchers(HttpMethod.POST, "/api/clients/current", "/api/clients/current/accounts", "/api/clients/current/cards").hasAuthority("CLIENT")
-                .antMatchers(HttpMethod.POST, "/transactions", "/transfers.html","loans").hasAuthority("CLIENT");
+                .antMatchers(HttpMethod.POST, "/transactions", "/transfers.html", "/loans").hasAuthority("CLIENT");
 
 
         http.formLogin()
@@ -71,9 +70,7 @@ public class WebAuthorization extends WebSecurityConfigurerAdapter {
             if (session != null) {
 
                 session.removeAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
-
             }
-
     }
 }
 
