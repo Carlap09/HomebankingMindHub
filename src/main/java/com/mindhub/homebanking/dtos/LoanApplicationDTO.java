@@ -1,32 +1,29 @@
 package com.mindhub.homebanking.dtos;
 
-import java.util.List;
-
 public class LoanApplicationDTO {
-        private Long loanTypeId;
-        private double amount;
-        private List<Integer> payments;
-        private String accountToNumber;
+    //properties
+    private long loanId;
+    private double amount;
+    private int payments;
+    private String accountToNumber;
 
+
+    //default constructor
     public LoanApplicationDTO() {
     }
 
-    public LoanApplicationDTO(Long loanTypeId, double amount, List<Integer> payments, String accountToNumber) {
-        this.loanTypeId = loanTypeId;
-        this.amount = amount;
-        this.payments = payments;
-        this.accountToNumber = accountToNumber;
-    }
 
-    public Long getLoanTypeId() {
-        return loanTypeId;
+
+    //accessors - getters
+    public long getLoanId() {
+        return loanId;
     }
 
     public double getAmount() {
         return amount;
     }
 
-    public List<Integer> getPayments() {
+    public int getPayments() {
         return payments;
     }
 

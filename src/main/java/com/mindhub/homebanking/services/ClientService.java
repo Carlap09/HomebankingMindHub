@@ -18,4 +18,9 @@ public interface ClientService {
     Optional<Object> getClients();
 
     Optional<Client> getClientEmail(String name);
+
+    Client getClientByEmail(String email);
+
+    void saveClient(Client client);
 }
+
