@@ -39,11 +39,12 @@ public class AccountServiceImplement implements AccountService {
 
     @Override
     public Account getAccByNumber(String accountDestiny) {
-        return null;
+        return accountRepository.findByNumber(accountDestiny);
     }
 
     @Override
     public void saveAcc(Account account) {
+        accountRepository.save(account);
 
     }
 
