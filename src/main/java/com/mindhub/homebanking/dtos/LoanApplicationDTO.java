@@ -5,7 +5,7 @@ public class LoanApplicationDTO {
     private long loanId;
     private double amount;
     private int payments;
-    private String accountToNumber;
+    private String toAccountNumber;
 
 
     //default constructor
@@ -27,7 +27,7 @@ public class LoanApplicationDTO {
         return payments;
     }
 
-    public String getAccountToNumber() {
-        return accountToNumber;
+    public String getToAccountNumber() {
+        return toAccountNumber;
     }
 }

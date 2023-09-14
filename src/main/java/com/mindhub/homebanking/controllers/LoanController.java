@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -35,7 +36,7 @@ public class LoanController {
 
     @Transactional
     @PostMapping("/loans")
-    public ResponseEntity<?> addLoan(@RequestBody LoanApplicationDTO loanApplicationDTO, LoanDTO loanDTO, Authentication authentication) {
+    public ResponseEntity<?> addLoan(@RequestBody LoanApplicationDTO loanApplicationDTO, Authentication authentication) {
         // Verify that the client is authenticated
         if (authentication == null || !authentication.isAuthenticated()) {
             return new ResponseEntity<>("The client is not authenticated", HttpStatus.UNAUTHORIZED);
@@ -48,30 +49,26 @@ public class LoanController {
                             "and fees cannot be less than or equal to zero");
         }
         // Check that the loan exists
-        Optional<Loan> optionalLoan = loanService.getOptionalLoanById(loanApplicationDTO.getLoanId());
-
-        if (optionalLoan.isEmpty()) {
+        //Optional<Loan> optionalLoan = loanService.getOptionalLoanById(loanApplicationDTO.getLoanId());
+        Loan loan = loanService.getLoan(loanApplicationDTO.getLoanId());
+        if (loan == null) {
 
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("The loan does not exist");
 
         }
 
         // Verify that the loan exists
-        if (loanApplicationDTO == null) {
-            return new ResponseEntity<>("That loan does not exist", HttpStatus.NOT_FOUND);
 
-        }
-        Loan loan = loanService.getLoan(loanApplicationDTO.getLoanId());
         // Verify that the requested amount does not exceed the maximum loan amount
         if (loanApplicationDTO.getAmount() > loan.getMaxAmount()) {
             return new ResponseEntity<>("The amount exceeds the maximum allowed", HttpStatus.BAD_REQUEST);
         }
 
         // Verify that the number of installments is valid
-        if (!loanDTO.getPayments().containsAll(loanDTO.getPayments())) {
+        if (!loan.getPayments().stream().anyMatch(payments->payments.equals(loanApplicationDTO.getPayments()))) {
             return new ResponseEntity<>("The amount of installments is not valid", HttpStatus.BAD_REQUEST);
         }
-        Account account = accountService.getAccByNumber(loanApplicationDTO.getAccountToNumber());
+        Account account = accountService.getAccByNumber(loanApplicationDTO.getToAccountNumber());
         // Verify that the target account exists
 
         if (account == null) {
@@ -79,7 +76,7 @@ public class LoanController {
         }
 
 
-        List <ClientLoan> existingLoans = clientLoanService.getClientLoanByEmailAndLoanName(authentication.getName(),loanDTO.getName());
+        List <ClientLoan> existingLoans = clientLoanService.getClientLoanByEmailAndLoanName(authentication.getName(),loan.getName());
 
         if (!existingLoans.isEmpty()) {
             // The client already has a loan with this name, we return an error response
@@ -89,10 +86,12 @@ public class LoanController {
 
         Client authenticadedClient = clientService.getClientByEmail(authentication.getName());
 
+
         //get authenticated client accounts
         List<Account> authenticatedClientAccounts = accountService.getAccountsByClient(authenticadedClient);
 
-        if (!authenticatedClientAccounts.contains(authenticatedClientAccounts)) {
+
+        if (!authenticatedClientAccounts.contains(account)) {
 
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("This destination account does not belong to the logged in client");
 

@@ -31,7 +31,7 @@ public class HomebankingApplication {
 		return (args) -> {
 
 			Client melbaClient = new Client("Melba", "Morel", "melba@mindhub.com",passwordEncoder.encode("1234"));
-			Client alexandraClient = new Client("Alexandra", "Araujo", "alexandraa@gmail.com",passwordEncoder.encode("4321"));
+    		Client alexandraClient = new Client("Alexandra", "Araujo", "alexandraa@gmail.com",passwordEncoder.encode("4321"));
 			Client adminClient = new Client("admin", "admin", "admin@admin.com", passwordEncoder.encode("7894"));
 
 
@@ -90,9 +90,9 @@ public class HomebankingApplication {
 			Loan personalLoan = new Loan(null,"Personal", 100000, personalPayments);
 			Loan carLoan = new Loan(null,"Car", 300000, carPayments);
 
-			loanRepository.save(mortgageLoan);
+    		loanRepository.save(mortgageLoan);
 			loanRepository.save(personalLoan);
-			loanRepository.save(carLoan);
+		    loanRepository.save(carLoan);
 
 			// Create ClientLoan  for Melba
 			ClientLoan melbaMortgage = new ClientLoan(400000.00, 60, melbaClient, mortgageLoan);
@@ -124,7 +124,7 @@ public class HomebankingApplication {
 			Card melbaDebitCard1 = new Card(melbaClient,melbaClient.getFirstName() + " " + melbaClient.getLastName(),CardType.DEBIT, CardColor.GOLD, "1234567812345678", (short) 235, currentDate, currentDate.plusYears(5));
 			Card melbaCreditCard2 = new Card(melbaClient,melbaClient.getFirstName() + " " + melbaClient.getLastName(),CardType.CREDIT, CardColor.TITANIUM, "9876543298765432", (short) 456, currentDate, currentDate.plusYears(5));
 
-			cardRepository.save(melbaDebitCard1);
+    		cardRepository.save(melbaDebitCard1);
 			cardRepository.save(melbaCreditCard2);
 
 			melbaClient.getCards().add(melbaDebitCard1);
@@ -136,7 +136,7 @@ public class HomebankingApplication {
 
 			cardRepository.save(alexandraCreditCard1);
 
-			alexandraClient.getCards().add(alexandraCreditCard1);
+    		alexandraClient.getCards().add(alexandraCreditCard1);
 			clientRepository.save(alexandraClient);
 		};
 
